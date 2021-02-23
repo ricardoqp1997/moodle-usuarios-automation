@@ -24,10 +24,8 @@ from flask_restful import (
 )
 
 # Librerías diseñadas para mos módulos SMTP y SQL REGISTER para el Web Service
-from modulos import (
-    moodle_smtp,           # Módulo para envío de  notificaciones por SMTP
-    moodle_passwords       # Módulo para el manejo de contraseñas para el registro en MySQL
-)
+import moodle_smtp
+import moodle_passwords
 
 # Librería para manipular archivos .YAML
 import yaml
@@ -57,6 +55,7 @@ except:
         'Error de configuración de base de datos. Revise el archivo .YAML del proyecto o verifique los datos de'
         'conexión de la base de datos'
     )
+    raise
 
 
 # Definimos el método de registro en MySQL de la información procesada
@@ -90,6 +89,7 @@ def moodle_mysql(nombre, apellido, correo, usuario, password):
         mysql.connection.commit()
     except:
         print('Error de registro en base de datos.')
+        raise
 
 
 # Definimos el método principal donde se realizará el proceso  de registro datos y envío de mensajes
@@ -108,36 +108,38 @@ def procesar_datos(data_json):
     :return: Esta función no retorna valores específicos.
     """
 
-    # try:
+    try:
 
-    # Inicializamos un objeto de la clase SMTP importado para la conexión con el servidor SMTP
-    smtp = moodle_smtp.SMTP()
+        # Inicializamos un objeto de la clase SMTP importado para la conexión con el servidor SMTP
+        smtp = moodle_smtp.SMTP()
 
-    # Iniciamos un objeto de la clase Passwords importado para la manipulación de contraseñas para Moodle
-    pasw = moodle_passwords.Passwords()
+        # Iniciamos un objeto de la clase Passwords importado para la manipulación de contraseñas para Moodle
+        pasw = moodle_passwords.Passwords()
 
-    # Recorremos la lista referenciada en el método dependiendo del tamaño de esta para extraer los datos
-    for index in range(len(data_json)):
+        # Recorremos la lista referenciada en el método dependiendo del tamaño de esta para extraer los datos
+        for index in range(len(data_json)):
 
-        # Extracción de los datos de la lista, gracias al JSON obtenido
-        nombre = data_json[index]['Datos']['Nombre']
-        apellido = data_json[index]['Datos']['Apellido']
-        correo = data_json[index]['Datos']['Correo']
-        usuario = data_json[index]['Datos']['Usuario']
+            # Extracción de los datos de la lista, gracias al JSON obtenido
+            nombre = data_json[index]['Datos']['Nombre']
+            apellido = data_json[index]['Datos']['Apellido']
+            correo = data_json[index]['Datos']['Correo']
+            usuario = data_json[index]['Datos']['Usuario']
 
-        # Generación y encriptación de contraeña para el usuario
-        password = pasw.gen_password()
-        pass_enc = pasw.encrypt_password(password)
+            # Generación y encriptación de contraeña para el usuario
+            password = pasw.gen_password()
+            pass_enc = pasw.encrypt_password(password)
 
-        # Registro de datos en base de datos MySQL
-        moodle_mysql(nombre, apellido, correo, usuario, pass_enc)
+            # Registro de datos en base de datos MySQL
+            moodle_mysql(nombre, apellido, correo, usuario, pass_enc)
 
-        # Envío de datos de registro de usuario a los correos electrónicos de los usuarios registrados
-        smtp.enviar_notificacion(nombre, apellido, correo, usuario, password)
+            # Envío de datos de registro de usuario a los correos electrónicos de los usuarios registrados
+            smtp.enviar_notificacion(nombre, apellido, correo, usuario, password)
 
-        print('datos:', nombre, apellido, correo, usuario, password)
-    # except:
-    print('Error en la extracción de datos recibidos')
+            print('datos:', nombre, apellido, correo, usuario, password)
+
+    except:
+        print('Error en la extracción de datos recibidos')
+        raise
 
 
 # Creamos nuestra clase principal que llevará a cabo el proceso GET y POST de nuestro Web Service
@@ -186,18 +188,23 @@ class MoodleRequestParser(Resource):
         # Validamos la obtención de información en el request recibido
         if request.get_json():
 
-            # Capturamos la información JSON y la capturamos en una lista
-            datos = request.get_json()
+            try:
+                # Capturamos la información JSON y la capturamos en una lista
+                datos = request.get_json()
 
-            # Visualizamos en consola los datos (En desarrollo y QA)
-            print(type(datos))
+                # Visualizamos en consola los datos (En desarrollo y QA)
+                print(type(datos))
 
-            # Procesamos los datos recibidos
-            procesar_datos(datos)
+                # Procesamos los datos recibidos
+                procesar_datos(datos)
 
-            return {
-                'Estado': str(len(datos)) + ' usuarios creados exitosamente.'
-            }
+                return {
+                    'Estado': str(len(datos)) + ' usuarios creados exitosamente.'
+                }
+            except:
+                return {
+                    'Estado': 'Se ha presentado un error inesperado.'
+                }
         else:
 
             return {

@@ -41,14 +41,24 @@ class SMTP:
         3. El correo electrónico debe estar verificado y coincidir con la llave API para evitar inconvenientes.
         """
 
-        api = yaml.load(
-            open('../sendgrid_smtp.yaml'),  # Leemos el archivo .YAML con datos de conexión a MySQL
-            Loader=yaml.FullLoader
-        )
+        self.api = None
 
         try:
-            # Asignación de variable de entorno para almacenamiento de la API
-            os.environ['SENDGRID_API_KEY'] = api['SENDGRID_API_KEY']
+            api = yaml.load(
+                open('sendgrid_smtp.yaml'),  # Leemos el archivo .YAML con datos de conexión a MySQL
+                Loader=yaml.FullLoader
+            )
+
+            try:
+                # Asignación de variable de entorno para almacenamiento de la API
+                os.environ['SENDGRID_API_KEY'] = api['SENDGRID_API_KEY']
+            except:
+                self.api = api['SENDGRID_API_KEY']
+                print(
+                    'Error en la configuración de variables de entorno. '
+                    'Posiblemente ya se ha realizado anteriormente'
+                )
+                pass
 
             # Asignación del correo electrónico para el servidor SMTP de SendGrid
             self.SENDER_MAIL = api['EMAIL_SENDGRID']
@@ -57,12 +67,13 @@ class SMTP:
                 'Error configurando los parámetros de envío de correos. Verifique el archivo .YAML, '
                 'los datos de configuración del servidor o su configuración general de SendGrid.'
             )
+            raise
 
     # Construimos nuestro método requerido con el objeto necesario para realizar el envío del mensaje
     def enviar_notificacion(self, nombre, apellido, correo, usuario, password):
         """
         Método de envío de notificaciones.
-
+        
         En este método se usan las funciones generales de la librería SendGrid para el envío y configuración de
         mensajes por medio de SMTP. Este método fue diseñado para que únciamente se pasen las variables que
         contendrán la información del usuario a notificar, el cuerpo del mensaje es fijo y predefinido para este
@@ -85,17 +96,30 @@ class SMTP:
             from_email=self.SENDER_MAIL,
             to_emails=correo,
             subject='Notificación de usuario creado en plataforma Moodle',
-            plain_text_content='Mensaje de prueba. '
+            plain_text_content='Sr(a). ' + nombre + ' ' + apellido + '.\n '
+                               
+                               '\nSe han creado sus nuevas credenciales para el ingreso al portal Moodle '
+                               'http://proveedores.famedicips.co/login/.\n'
+                               'Sus credenciales de acceso serán:\n\n '
+                               ''
                                '(' + nombre + ', ' + apellido + ', ' + usuario + ', ' + password + ').'
         )
 
         # Capturamos el proceso de envío del mensaje con una exepción para evitar inconvenientes de uso
         try:
-            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            try:
+                sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            except:
+                sg = SendGridAPIClient(os.environ.get(self.api))
+                pass
+
             response = sg.send(message)
             print(response.status_code)
             print(response.body)
             print(response.headers)
             print('======================================================')
         except Exception as e:
+            print('Error en SendGrid/SMTP')
+            print('======================================================')
             print(e.args)
+            raise

@@ -60,6 +60,7 @@ class Passwords:
             return password
         except:
             print('Error en generación de contraseña')
+            raise
 
     # Declaramos método para encriptación de contraseñas
     def encrypt_password(self, passw):
@@ -87,3 +88,4 @@ class Passwords:
                 self.encrypt_password(passw)
         except:
             print('Error procesando la contraseña')
+            raise
