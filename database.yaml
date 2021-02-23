@@ -1,3 +1,12 @@
+# Información de conexión a la base de datos
+# =======================================
+#
+# Se requiere cambiar los datos de conexión para de esta forma realizar la conexión.
+# Para QA y desarrollo se recomienda usar un servidor local de base de datos (Con XAMPP por ejemplo).
+# Para producción se requiere asignar los datos de conexión a la base de datos MySQL de Moodle.
+
+
+# Datos de conexión para la base de datos MySQL
 mysql_host: 'localhost'
 mysql_user: 'root'
 mysql_password: ''

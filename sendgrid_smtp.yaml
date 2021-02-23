@@ -1,0 +1,20 @@
+# Información de configuración para SendGrid
+# =====================================================
+#
+# Advertencia: La llave API de SendGrid es de uso restringido y se recomienda que al configurar el servidor
+# esta sea almacenada inmediatamente en este archivo ya que por privacidad y seguridad SendGrid solo la mostrará
+# una única vez.
+#
+# Para QA y Desarrollo usar la llave API No. 1, para Producción comentar la API No. 1 y especificar la que se usará
+# en producción debajo de ella con el nombre SENDGRID_API_KEY.
+#
+# Para el correo electrónico de envíos en producción comentar el "Correo de QA" y especificar el correo en producción
+# el cual tiene que estár autenticado y verificado en SendGrid en conjunto con la llave API. El correo debe llevar
+# el nombre EMAIL_SENDGRID.
+
+
+# API No. 1
+SENDGRID_API_KEY: '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'
+
+# Correo de QA
+EMAIL_SENDGRID: 'ricardoq@tics-sas.com'
