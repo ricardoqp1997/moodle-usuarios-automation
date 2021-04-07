@@ -185,7 +185,7 @@ class MoodleRequestParser(Resource):
         """
 
         return {
-            'Estado': 'Por favor realice el envío de información para el registro de usuarios en la plataforma..'
+            'Estado': 'Por favor realice el envio de informacion para el registro de usuarios en la plataforma..'
         }
 
     # Definimos nuestro método POST que se usará para recibir la información de registro de datos de usuarios Moodle.
