@@ -16,7 +16,7 @@ import secrets
 import string
 
 # Librería para encriptar contraseñas
-from passlib.hash import md5_crypt
+import bcrypt
 
 
 # Creación de clase especializada únicamente para el manejo de contraseñas
@@ -77,15 +77,28 @@ class Passwords:
         :return: Se retorna la contraseña entriptada y lista para ser almacenada en la base de datos MySQL.
         """
 
-        # Generamos una variable PASSWORD que almacenará la contraseña en el método, por medio de MD5_CRYPT
-        password = md5_crypt.encrypt(passw)
-
         try:
+
+            # Verificamos que la contraseña generada sea str
+            print(f'Contraseña type: {type(passw)}')
+
+            # Generamos nuestra salt con el prefijo mas compatible: $2a$ y el número de rondas: 10 y encriptamos
+            salt = bcrypt.gensalt(prefix=b'2a', rounds=10)
+            hashed = bcrypt.hashpw(bytes(passw, 'utf-8'), salt)
+
+            # Cambiamos el prefijo compatible $2a$ por el requerido: $2y$ para máxima compatibilidad con PHP
+            password = str.replace(hashed.decode('utf-8'), '$2a$', '$2y$')
+
+            print(f'HASH: {hashed} | Type: {type(hashed)}')
+            print(f'PASS: {password} | Type: {type(password)}')
+
             # Verificamos el resultado exitoso de la encriptación, de ser negativo reenviamos el parámetro al método
-            if md5_crypt.verify(passw, password):
+            if bcrypt.checkpw(bytes(passw, 'utf-8'), hashed):
+
                 return password
             else:
                 self.encrypt_password(passw)
-        except:
-            print('Error procesando la contraseña')
+
+        except Exception as e:
+            print(f'Error procesando la contraseña [{e}]')
             raise

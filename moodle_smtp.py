@@ -99,10 +99,23 @@ class SMTP:
             plain_text_content='Sr(a). ' + nombre + ' ' + apellido + '.\n '
                                
                                '\nSe han creado sus nuevas credenciales para el ingreso al portal Moodle '
-                               'http://proveedores.famedicips.co/login/.\n'
+                               'http://formacioneswv.worldvision.co/moodle/login/index.php\n'
                                'Sus credenciales de acceso serán:\n\n '
                                ''
-                               '(' + nombre + ', ' + apellido + ', ' + usuario + ', ' + password + ').'
+                               '(' + nombre + ', ' + apellido + ', ' + usuario + ', ' + password + ').',
+
+            html_content=f'<p>Sr(a). {nombre} {apellido}.</p>'
+            
+                         f'<p>Se ha creado un usuario nuevo a su nombre para su ingreso en el '
+                         f'<a href="http://formacioneswv.worldvision.co/moodle/login/index.php">Portal de Moodle</a>. '
+                         f'Las credenciales correspondientes para que pueda ingresar a la plataforma son las '
+                         f'siguientes:</p>'
+                         f'<ul>'
+                         f'<li><strong>Usuario:</strong> {usuario}</li>'
+                         f'<li><strong>Contraseña:</strong> {password}</li>'
+                         f'</ul>'
+                         f'<p>Para cualquier inconveniente o novedad relacioada con su ingreso al portal por favor '
+                         f'contactese con el área de soporte del portal.</p>'
         )
 
         # Capturamos el proceso de envío del mensaje con una exepción para evitar inconvenientes de uso

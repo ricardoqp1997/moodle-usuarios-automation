@@ -79,16 +79,25 @@ def moodle_mysql(nombre, apellido, correo, usuario, password):
 
     try:
 
+        # Asignamos variables por defecto para el registro
+        auth = 'email'
+        confirmed = 1
+        mnethostid = 1
+
         # Creamos el objeto REG para de esta forma manipular la base de datos
         reg = mysql.connection.cursor()
         reg.execute(
             # Creamos el query para insertar los datos en la base de datos MySQL
-            "INSERT INTO test (nombre, apellido, correo, usuario, password) VALUES(%s, %s, %s, %s, %s)",
-            (nombre, apellido, correo, usuario, password)
+            "INSERT INTO mdl_user (auth, confirmed, mnethostid, firstname, lastname, email, username, password) "
+            "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+            (auth, confirmed, mnethostid, nombre, apellido, correo, usuario, password)
         )
+
+        # Insertamos el query realizado de los datos de usuario en la base de datos
         mysql.connection.commit()
-    except:
-        print('Error de registro en base de datos.')
+
+    except Exception as e:
+        print(f'Error de registro en base de datos.{e}')
         raise
 
 
@@ -109,13 +118,26 @@ def procesar_datos(data_json):
     """
 
     try:
-
         # Inicializamos un objeto de la clase SMTP importado para la conexión con el servidor SMTP
         smtp = moodle_smtp.SMTP()
 
+    except:
+        print('Error en la inicializacion del servidor SMTP')
+        raise
+
+    try:
         # Iniciamos un objeto de la clase Passwords importado para la manipulación de contraseñas para Moodle
         pasw = moodle_passwords.Passwords()
 
+        # Generación y encriptación de contraeña para el usuario
+        password = pasw.gen_password()
+        pass_enc = pasw.encrypt_password(password)
+
+    except Exception as e:
+        print(f'Error en la generación de contraseña para el usuario [{e}]')
+        raise
+
+    try:
         # Recorremos la lista referenciada en el método dependiendo del tamaño de esta para extraer los datos
         for index in range(len(data_json)):
 
@@ -125,10 +147,6 @@ def procesar_datos(data_json):
             correo = data_json[index]['Datos']['Correo']
             usuario = data_json[index]['Datos']['Usuario']
 
-            # Generación y encriptación de contraeña para el usuario
-            password = pasw.gen_password()
-            pass_enc = pasw.encrypt_password(password)
-
             # Registro de datos en base de datos MySQL
             moodle_mysql(nombre, apellido, correo, usuario, pass_enc)
 
@@ -137,8 +155,8 @@ def procesar_datos(data_json):
 
             print('datos:', nombre, apellido, correo, usuario, password)
 
-    except:
-        print('Error en la extracción de datos recibidos')
+    except Exception as e:
+        print(f'Error en la extracción de datos recibidos.\n{e}')
         raise
 
 
@@ -167,7 +185,7 @@ class MoodleRequestParser(Resource):
         """
 
         return {
-            'Estado': 'Por favor realice el envío de información para el registro de usuarios en la plataforma.'
+            'Estado': 'Por favor realice el envío de información para el registro de usuarios en la plataforma..'
         }
 
     # Definimos nuestro método POST que se usará para recibir la información de registro de datos de usuarios Moodle.
@@ -193,7 +211,7 @@ class MoodleRequestParser(Resource):
                 datos = request.get_json()
 
                 # Visualizamos en consola los datos (En desarrollo y QA)
-                print(type(datos))
+                print(f'Entry data type: {type(datos)}\n')
 
                 # Procesamos los datos recibidos
                 procesar_datos(datos)
@@ -201,9 +219,9 @@ class MoodleRequestParser(Resource):
                 return {
                     'Estado': str(len(datos)) + ' usuarios creados exitosamente.'
                 }
-            except:
+            except Exception as e:
                 return {
-                    'Estado': 'Se ha presentado un error inesperado.'
+                    'Estado': f'Se ha presentado un error inesperado.. {e}'
                 }
         else:
 
@@ -218,4 +236,5 @@ api.add_resource(MoodleRequestParser, '/')
 
 # Configuramos la ejecución del recurso web
 if __name__ == '__main__':
+    print('aaaa')
     app.run(debug=True)

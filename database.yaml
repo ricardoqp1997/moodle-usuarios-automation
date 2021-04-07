@@ -7,7 +7,7 @@
 
 
 # Datos de conexión para la base de datos MySQL
-mysql_host: 'db4free.net'
-mysql_user: 'ricardoqp1997'
-mysql_password: 'Ricardo97!'
-mysql_db: 'db_test_restful'
+mysql_host: '52.188.123.223'
+mysql_user: 'tics_test'
+mysql_password: 'Colombia3'
+mysql_db: 'moodle'
