@@ -104,8 +104,27 @@ class SMTP:
                                ''
                                '(' + nombre + ', ' + apellido + ', ' + usuario + ', ' + password + ').',
 
-            html_content=f'<p>Sr(a). {nombre} {apellido}.</p>'
-            
+            html_content=f'<h4 style="text-align: center;"><strong>Apreciado (a) Estudiante</strong></h4>\n'
+                         
+                         f'<p>Sea usted bienvenido(a) a este su diplomado. Es para nosotros un placer y un honor '
+                         f'ver cómo ha decidido escoger este diplomado para ampliar sus conocimientos en el trabajo '
+                         f'comunitario y fortalecer su formación y perfeccionamiento profesional.</p>'
+                         
+                         f'<p>Estaremos vinculados en la aventura de formación de tres módulos, los cuales se irán '
+                         f'desarrollando cien por ciento virtual con unas sesiones en vivo cada martes a las 6 pm '
+                         f'hora Colombia.</p>'
+                         
+                         f'<p>El martes 13 de abril se habilitará la plataforma (no antes) de acuerdo con el horario '
+                         f'para que inicie el desarrollo del primer módulo y luego los siguientes de acuerdo con las '
+                         f'fechas establecidas.</p>'
+                         
+                         f'<p>A continuación, estamos adjuntando link de zoom para que el próximo martes 13 de abril a '
+                         f'las 06:00 nos podamos conectar durante una hora para iniciar este increíble tiempo de '
+                         f'formación.</p>'
+                         
+                         f'<a href="https://worldvision.zoom.us/j/91474125045">'
+                         f'https://worldvision.zoom.us/j/91474125045</a>.\n'
+                         
                          f'<p>Se ha creado un usuario nuevo a su nombre para su ingreso en el '
                          f'<a href="http://formacioneswv.worldvision.co/moodle/login/index.php">Portal de Moodle</a>. '
                          f'Las credenciales correspondientes para que pueda ingresar a la plataforma son las '
@@ -115,7 +134,10 @@ class SMTP:
                          f'<li><strong>Contraseña:</strong> {password}</li>'
                          f'</ul>'
                          f'<p>Para cualquier inconveniente o novedad relacioada con su ingreso al portal por favor '
-                         f'contactese con el área de soporte del portal.</p>'
+                         f'contactese con el área de soporte del portal.</p>\n'
+                         
+                         f'<p>Bienvenidos y esperamos que disfrutes esta experiencia de vida.</p>'
+
         )
 
         # Capturamos el proceso de envío del mensaje con una exepción para evitar inconvenientes de uso
