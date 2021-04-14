@@ -13,7 +13,7 @@ TICS SAS 2021
 # Librerías para configuración de servidor SMTP con SendGrid
 import os
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import Mail, Cc
 
 # Librería para manipular archivos .YAML
 import yaml
@@ -42,6 +42,7 @@ class SMTP:
         """
 
         self.api = None
+        self.cc_email = 'oscar_esquivel@wvi.org'
 
         try:
             api = yaml.load(
@@ -139,6 +140,14 @@ class SMTP:
                          f'<p>Bienvenidos y esperamos que disfrutes esta experiencia de vida.</p>'
 
         )
+
+        try:
+            # configuramos el envío de CC desde el correo.
+            Cc(self.cc_email)
+            message.add_cc(Cc(self.cc_email))
+        except Exception as e:
+            print(f'Error configurando el CC [{e}]')
+            pass
 
         # Capturamos el proceso de envío del mensaje con una exepción para evitar inconvenientes de uso
         try:
