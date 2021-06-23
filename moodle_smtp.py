@@ -107,37 +107,48 @@ class SMTP:
 
             html_content=f'<h4 style="text-align: center;"><strong>Apreciado (a) Estudiante</strong></h4>\n'
                          
-                         f'<p>Sea usted bienvenido(a) a este su diplomado. Es para nosotros un placer y un honor '
-                         f'ver cómo ha decidido escoger este diplomado para ampliar sus conocimientos en el trabajo '
+                         f'<p>Sea usted bienvenido(a) a este su diplomado. Es para nosotros un placer y un honor ver '
+                         f'cómo ha decidido escoger este diplomado para ampliar sus conocimientos en el trabajo '
                          f'comunitario y fortalecer su formación y perfeccionamiento profesional.</p>'
                          
                          f'<p>Estaremos vinculados en la aventura de formación de tres módulos, los cuales se irán '
-                         f'desarrollando cien por ciento virtual con unas sesiones en vivo cada martes a las 6 pm '
-                         f'hora Colombia.</p>'
+                         f'desarrollando cien por ciento virtual con 10 (diez) sesiones en vivo cada martes a las 6 pm '
+                         f'hora Colombia a través de Zoom.</p>'
                          
-                         f'<p>El martes 13 de abril se habilitará la plataforma (no antes) de acuerdo con el horario '
-                         f'para que inicie el desarrollo del primer módulo y luego los siguientes de acuerdo con las '
-                         f'fechas establecidas.</p>'
+                         f'<p>El martes 13 de Julio (no antes) se habilitará la plataforma de acuerdo en el horario '
+                         f'indicado para que inicie el desarrollo del primer módulo y luego los siguientes de acuerdo '
+                         f'con las fechas y el desarrollo establecido. </p>'
                          
-                         f'<p>A continuación, estamos adjuntando link de zoom para que el próximo martes 13 de abril a '
-                         f'las 06:00 nos podamos conectar durante una hora para iniciar este increíble tiempo de '
-                         f'formación.</p>'
+                         f'<p>A continuación, estamos adjuntando link de zoom para conexión el próximo martes 13 de '
+                         f'Julio a las 06:00 pm hora Colombia, en todas las sesiones nos conectaremos durante una hora '
+                         f'y media; así será siempre este increíble tiempo de formación.</p>'
                          
-                         f'<a href="https://worldvision.zoom.us/j/91474125045">'
-                         f'https://worldvision.zoom.us/j/91474125045</a>.\n'
+                         f'<a href="https://worldvision.zoom.us/j/95626036844">'
+                         f'https://worldvision.zoom.us/j/95626036844</a>'
                          
-                         f'<p>Se ha creado un usuario nuevo a su nombre para su ingreso en el '
+                         f'<p>ID de reunión: 956 2603 6844</p>'
+                         f'<p>Código de acceso: 263851</p>'
+                         
+                         f'<p><i>*Recuerda tener presente el link de Zoom y el Código de acceso todas las sesiones '
+                         f'serán por este mismo link. </i></p>'
+                         
+                         f'<p>Hemos creado su usuario y su contraseña para el ingreso al '
                          f'<a href="http://formacioneswv.worldvision.co/moodle/login/index.php">Portal de Moodle</a>. '
-                         f'Las credenciales correspondientes para que pueda ingresar a la plataforma son las '
-                         f'siguientes:</p>'
+                         f'Estas son las credenciales correspondientes para su ingreso a la plataforma y desarrollo '
+                         f'del curso.</p>'
+                         
                          f'<ul>'
                          f'<li><strong>Usuario:</strong> {usuario}</li>'
                          f'<li><strong>Contraseña:</strong> {password}</li>'
                          f'</ul>'
-                         f'<p>Para cualquier inconveniente o novedad relacioada con su ingreso al portal por favor '
-                         f'contactese con el área de soporte del portal.</p>\n'
+                         
+                         f'<p>Para cualquier inconveniente o novedad relacionada con su ingreso al portal por favor '
+                         f'contáctese con el área de soporte del portal y/o envía un correo reportando el '
+                         f'incidente a <a href="mailto:oscar_esquivel@wvi.org">oscar_esquivel@wvi.org</a></p>\n'
                          
                          f'<p>Bienvenidos y esperamos que disfrutes esta experiencia de vida.</p>'
+                         f'<p>Cordialmente,</p>'
+                         f'<p>Equipo World Vision Colombia</p>'
 
         )
 

@@ -236,5 +236,4 @@ api.add_resource(MoodleRequestParser, '/')
 
 # Configuramos la ejecución del recurso web
 if __name__ == '__main__':
-    print('aaaa')
     app.run(debug=True)
